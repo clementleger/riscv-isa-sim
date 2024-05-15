@@ -257,6 +257,7 @@ int sim_t::run()
     set_procs_debug(true);
 
   htif_t::set_expected_xlen(isa.get_max_xlen());
+  htif_t::set_load_offset(DRAM_BASE);
 
   // htif_t::run() will repeatedly call back into sim_t::idle(), each
   // invocation of which will advance target time

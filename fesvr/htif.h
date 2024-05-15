@@ -27,6 +27,7 @@ class htif_t : public chunked_memif_t
   bool done();
   int exit_code();
   void set_expected_xlen(unsigned int m) { expected_xlen = m; }
+  void set_load_offset(reg_t offset) { load_offset = offset; }
   virtual memif_t& memif() { return mem; }
 
   template<typename T> inline T from_target(target_endian<T> n) const
@@ -58,7 +59,8 @@ class htif_t : public chunked_memif_t
   virtual size_t chunk_align() = 0;
   virtual size_t chunk_max_size() = 0;
 
-  virtual std::map<std::string, uint64_t> load_payload(const std::string& payload, reg_t* entry);
+  virtual std::map<std::string, uint64_t> load_payload(const std::string& payload, reg_t* entry,
+                                                       reg_t load_addr);
   virtual void load_program();
   virtual void idle() {}
 
@@ -79,6 +81,7 @@ class htif_t : public chunked_memif_t
   void register_devices();
   void usage(const char * program_name);
   unsigned int expected_xlen = 0;
+  reg_t load_offset = 0;
   memif_t mem;
   reg_t entry;
   bool writezeros;
